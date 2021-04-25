@@ -1,20 +1,26 @@
 import React, { useState, useReducer, useEffect } from "react";
 import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
 
-import * as Location from "expo-location";
-
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
+import { ApplicationState, MoviesState } from "../redux";
 
 import { useNavigation } from "../utils";
 
 const screenWidth = Dimensions.get("screen").width;
 
-const LandingScreen = () => {
+interface LandingProps {
+  movieReducer: MoviesState;
+}
+
+const _LandingScreen: React.FC<LandingProps> = (props) => {
+  const { movieReducer } = props;
+
   const { navigate } = useNavigation();
 
   useEffect(() => {
     setTimeout(() => {
-      console.log("hello useEffect");
+      console.log("movieReducer", movieReducer);
+      console.log("homeStack push");
       navigate("homeStack");
     }, 2000);
   }, []);
@@ -74,5 +80,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+const mapToStateProps = (state: ApplicationState) => ({
+  movieReducer: state.movieReducer,
+});
+
+const LandingScreen = connect(mapToStateProps)(_LandingScreen);
 
 export { LandingScreen };

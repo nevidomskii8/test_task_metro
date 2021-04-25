@@ -1,11 +1,14 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { LandingScreen } from "./src/screens/LandingScreen";
 import { HomeScreen } from "./src/screens/HomeScreen";
 
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
+import { Provider } from "react-redux";
+
+import { store } from "./src/redux";
 
 const switchNavigator = createSwitchNavigator({
   landingStack: {
@@ -41,9 +44,9 @@ const AppNavigation = createAppContainer(switchNavigator);
 
 export default function App() {
   return (
-    <View style={styles.container}>
+    <Provider store={store}>
       <AppNavigation />
-    </View>
+    </Provider>
   );
 }
 
