@@ -1,17 +1,40 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import { connect } from "react-redux";
+import { MovieCard } from "../components/MovieCard";
+import { ApplicationState, MoviesState } from "../redux";
+import { useNavigation } from "../utils";
 
-export const HomeScreen = () => {
+interface HomeProps {
+  movieReducer: MoviesState;
+}
+
+const screenWidth = Dimensions.get("screen").width;
+
+export const _HomeScreen: React.FC<HomeProps> = ({ movieReducer }) => {
+  const { results } = movieReducer.moviesList;
+  const { navigate } = useNavigation();
+  const handlleOnTap = (id: number) => {
+    navigate("DetailPage", { id: id });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.navigation}>
-        <Text>Navigation</Text>
+        <Text style={styles.title}>Movies</Text>
       </View>
       <View style={styles.body}>
-        <Text>Home page</Text>
-      </View>
-      <View style={styles.footer}>
-        <Text>Footer</Text>
+        <FlatList
+          contentContainerStyle={styles.list}
+          showsHorizontalScrollIndicator={false}
+          numColumns={2}
+          data={results}
+          renderItem={({ item }) => (
+            <MovieCard item={item} onTap={handlleOnTap} />
+          )}
+          keyExtractor={(item) => `${item["id"]}`}
+        />
       </View>
     </View>
   );
@@ -20,20 +43,33 @@ export const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "green",
+  },
+  title: {
+    fontSize: 32,
+    marginLeft: 10,
+    color: "#858585",
   },
   navigation: {
-    flex: 2,
-    backgroundColor: "red",
+    display: "flex",
+    justifyContent: "center",
+    flex: 1.5,
   },
   body: {
     flex: 9,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "yellow",
   },
-  footer: {
-    flex: 1,
-    backgroundColor: "cyan",
+  list: {
+    width: screenWidth,
+    display: "flex",
+    flexDirection: "column",
   },
 });
+
+const mapToStateProps = (state: ApplicationState) => ({
+  movieReducer: state.movieReducer,
+});
+
+const HomeScreen = connect(mapToStateProps)(_HomeScreen);
+
+export { HomeScreen };

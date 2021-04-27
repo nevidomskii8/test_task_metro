@@ -8,7 +8,7 @@ export interface GetPopularMovies {
     payload: PopularMoviesModel;
 }
 
-export interface GeDetailMovie {
+export interface GetDetailMovie {
     readonly type: "GET_DETAIL_MOVIE";
     payload: MovieDetailModel;
 }
@@ -18,22 +18,26 @@ export interface ArrorAction {
     payload: any;
 }
 
-export type MovieAction = GetPopularMovies | GeDetailMovie | ArrorAction;
+export type MovieAction = GetPopularMovies | GetDetailMovie | ArrorAction;
 
-export const onGetCollactionMovies = (ganre: string) => {
+
+const onGetCollactionMovies = (ganre: string) => {
     return async (dispatch: Dispatch<MovieAction>) => {
         try {
             const response = await axios.get<PopularMoviesModel>(`${BASE_URL}movie/${ganre}?api_key=${APY_KEY}&language=ru-RUS `);
+
             if (!response) {
                 dispatch({
                     type: "ON_ERROR",
                     payload: "Availability error"
                 });
+
             } else {
                 dispatch({
                     type: "GET_POPULAR_MOVIES",
                     payload: response.data
                 });
+
             }
         } catch (e) {
             dispatch({
@@ -44,7 +48,8 @@ export const onGetCollactionMovies = (ganre: string) => {
     };
 };
 
-export const onGetDetailMovie = (id: number) => {
+
+const onGetDetailMovie = (id: number) => {
     return async (dispatch: Dispatch<MovieAction>) => {
         try {
             const response = await axios.get<MovieDetailModel>(`${BASE_URL}movie/${id}?api_key=${APY_KEY}&language=ru-RUS `);
@@ -53,11 +58,13 @@ export const onGetDetailMovie = (id: number) => {
                     type: "ON_ERROR",
                     payload: "Availability error"
                 });
+
             } else {
                 dispatch({
                     type: "GET_DETAIL_MOVIE",
                     payload: response.data
                 });
+
             }
         } catch (e) {
             dispatch({
@@ -67,3 +74,5 @@ export const onGetDetailMovie = (id: number) => {
         }
     };
 };
+
+export { onGetDetailMovie, onGetCollactionMovies };

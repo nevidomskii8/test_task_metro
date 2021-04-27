@@ -1,26 +1,23 @@
-import React, { useState, useReducer, useEffect } from "react";
-import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
-
-import { connect, useSelector } from "react-redux";
-import { ApplicationState, MoviesState } from "../redux";
-
+import React, { useEffect } from "react";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { connect } from "react-redux";
 import { useNavigation } from "../utils";
+import { onGetCollactionMovies, ApplicationState, MoviesState } from "../redux";
 
 const screenWidth = Dimensions.get("screen").width;
 
 interface LandingProps {
   movieReducer: MoviesState;
+  onGetCollactionMovies: Function;
 }
 
 const _LandingScreen: React.FC<LandingProps> = (props) => {
-  const { movieReducer } = props;
-
   const { navigate } = useNavigation();
+  const { onGetCollactionMovies } = props;
 
   useEffect(() => {
+    onGetCollactionMovies("popular");
     setTimeout(() => {
-      console.log("movieReducer", movieReducer);
-      console.log("homeStack push");
       navigate("homeStack");
     }, 2000);
   }, []);
@@ -67,7 +64,7 @@ const styles = StyleSheet.create({
   },
   addressTitle: {
     fontSize: 22,
-    fontWeight: "700",
+    fontWeight: "bold",
     color: "#7D7D7D",
   },
   addressText: {
@@ -85,6 +82,8 @@ const mapToStateProps = (state: ApplicationState) => ({
   movieReducer: state.movieReducer,
 });
 
-const LandingScreen = connect(mapToStateProps)(_LandingScreen);
+const LandingScreen = connect(mapToStateProps, {
+  onGetCollactionMovies,
+})(_LandingScreen);
 
 export { LandingScreen };

@@ -17,7 +17,7 @@ export interface MovieItem {
 
 export interface PopularMoviesModel {
     page: number;
-    results: [MovieItem];
+    results: [];
     total_pages: number;
     total_results: number;
 }

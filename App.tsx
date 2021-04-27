@@ -1,14 +1,13 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Image } from "react-native";
 import { LandingScreen } from "./src/screens/LandingScreen";
 import { HomeScreen } from "./src/screens/HomeScreen";
-
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { Provider } from "react-redux";
-
 import { store } from "./src/redux";
+import { DetailScreen } from "./src/screens/DetailSrceen";
 
 const switchNavigator = createSwitchNavigator({
   landingStack: {
@@ -29,6 +28,7 @@ const switchNavigator = createSwitchNavigator({
       screen: createStackNavigator(
         {
           HomePage: HomeScreen,
+          DetailPage: DetailScreen,
         },
         {
           defaultNavigationOptions: {
@@ -36,6 +36,12 @@ const switchNavigator = createSwitchNavigator({
           },
         }
       ),
+      navigationOptions: {
+        tabBarIcon: ({ focused, tintColor }) => {
+          let icon = require("./src/images/home_icon.png");
+          return <Image source={icon} style={styles.tabIcon} />;
+        },
+      },
     },
   }),
 });
@@ -51,9 +57,8 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "center",
+  tabIcon: {
+    width: 30,
+    height: 30,
   },
 });
