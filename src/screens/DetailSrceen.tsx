@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
   percent: {
     zIndex: 1,
     position: "absolute",
-    fontSize: 32,
     height: 58,
     width: 58,
     borderRadius: 58 / 2,

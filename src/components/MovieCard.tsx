@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   View,
+  Dimensions,
 } from "react-native";
 import { MovieItem } from "../redux";
 
@@ -12,6 +13,10 @@ interface CardProps {
   item: MovieItem;
   onTap: Function;
 }
+
+const screenWidth = Dimensions.get("screen").width;
+const marginHorisontal = screenWidth/16 
+const heightItem = screenWidth/2.5
 
 const MovieCard: React.FC<CardProps> = ({ item, onTap }) => {
   return (
@@ -37,13 +42,13 @@ const styles = StyleSheet.create({
     display: "flex",
     backgroundColor: "#1C1C1C",
     borderRadius: 20,
-    width: 150,
-    height: 200,
+    width: screenWidth/3,
+    height: heightItem,
     justifyContent: "space-around",
     alignItems: "flex-start",
     marginBottom: 10,
-    marginTop: 10,
-    marginLeft: 20,
+    marginHorizontal: marginHorisontal ,
+    
   },
   img: {
     width: "100%",

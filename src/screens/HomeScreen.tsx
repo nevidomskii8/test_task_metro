@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
   list: {
     width: screenWidth,
     display: "flex",
+    alignItems: "center",
     flexDirection: "column",
   },
 });
